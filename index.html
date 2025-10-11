@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brett Innsbruck</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2980b9;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-filter-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box, .filter-select, .sort-select {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-box:focus, .filter-select:focus, .sort-select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 15px;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active, .view-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .games-list {
+            display: none;
+        }
+
+        .games-list.active {
+            display: block;
+        }
+
+        .games-grid.active {
+            display: grid;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .expansion-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .cooperative-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #4CAF50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .game-card .expansion-tag.with-coop {
+            top: 45px;
+        }
+
+        .game-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-image {
+            transform: scale(1.05);
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .game-year {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .game-details {
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .detail-value {
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        .game-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 8px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2980b9;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        .game-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .tag {
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tag.rank {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .tag.rating {
+            background: #f39c12;
+            color: white;
+        }
+
+        .tag.expansion {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .tag.base-game {
+            background: #27ae60;
+            color: white;
+        }
+
+        .list-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .list-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .list-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .list-content {
+            flex: 1;
+        }
+
+        .list-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .list-details {
+            display: flex;
+            gap: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .no-image {
+            background: linear-gradient(45deg, #bdc3c7, #ecf0f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #7f8c8d;
+        }
+
+        .error {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 15px;
+            }
+            
+            .search-filter-container {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                gap: 15px;
+            }
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: white;
+            margin: 2% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            margin-top: -10px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .modal-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .modal-image-large {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .special-ranks {
+            font-size: 0.9rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .modal-title-section {
+            flex: 1;
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .modal-year {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-stat {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .modal-stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .modal-stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .modal-details {
+            margin-bottom: 20px;
+        }
+
+        .modal-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .modal-detail-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .modal-detail-value {
+            color: #34495e;
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .modal-tag {
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .modal-tag.expansion {
+            background: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 5% auto;
+                padding: 20px;
+                width: 95%;
+            }
+
+            .modal-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .modal-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .modal-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Password Protection Styles */
+        .password-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .password-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .password-container h1 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 2.5rem;
+        }
+
+        .password-container p {
+            margin-bottom: 25px;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .password-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .password-button:hover {
+            background: #2980b9;
+        }
+
+        .password-error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            min-height: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Password Protection Screen -->
+    <div id="passwordScreen" class="password-screen">
+        <div class="password-container">
+            <input type="password" id="passwordInput" class="password-input" placeholder="Password">
+            <button onclick="checkPassword()" class="password-button">Enter</button>
+            <div id="passwordError" class="password-error"></div>
+        </div>
+    </div>
+
+    <!-- Main Content (hidden by default) -->
+    <div id="mainContent" class="main-content" style="display: none;">
+    <div class="container">
+        <div class="header">
+            <h1>🎲 Brett Innsbruck</h1>
+        </div>
+
+        <div class="controls">
+            <div class="search-filter-container">
+                <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search games by name...">
+                
+                <select class="filter-select" id="gameTypeFilter">
+                    <option value="">All Game Types</option>
+                    <option value="family">Family Games</option>
+                    <option value="strategy">Strategy Games</option>
+                    <option value="children">Children's Games</option>
+                    <option value="party">Party Games</option>
+                    <option value="thematic">Thematic Games</option>
+                    <option value="war">War Games</option>
+                    <option value="abstract">Abstract Games</option>
+                    <option value="cooperative">Cooperative Games</option>
+                </select>
+                
+                <select class="filter-select" id="playerCountFilter">
+                    <option value="">All Player Counts</option>
+                    <option value="1">1 Player</option>
+                    <option value="2">2 Players</option>
+                    <option value="3">3 Players</option>
+                    <option value="4">4 Players</option>
+                    <option value="5">5 Players</option>
+                    <option value="6">6 Players</option>
+                    <option value="7">7 Players</option>
+                    <option value="8">8 Players</option>
+                    <option value="9">9 Players</option>
+                    <option value="10+">10+ Players</option>
+                </select>
+                
+                <select class="sort-select" id="sortSelect">
+                    <option value="rank">Sort by BGG Rank</option>
+                    <option value="rating">Sort by Rating (High to Low)</option>
+                    <option value="rating-asc">Sort by Rating (Low to High)</option>
+                    <option value="name">Sort by Name (A-Z)</option>
+                    <option value="name-desc">Sort by Name (Z-A)</option>
+                    <option value="year">Sort by Year (New to Old)</option>
+                    <option value="year-asc">Sort by Year (Old to New)</option>
+                    <option value="complexity">Sort by Complexity (Light to Heavy)</option>
+                    <option value="complexity-desc">Sort by Complexity (Heavy to Light)</option>
+                    <option value="players">Sort by Player Count (Low to High)</option>
+                    <option value="players-desc">Sort by Player Count (High to Low)</option>
+                </select>
+                
+                <div class="view-toggle">
+                    <button class="view-btn active" id="gridView">Grid</button>
+                    <button class="view-btn" id="listView">List</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">Loading your board game collection...</div>
+        
+        <div class="games-grid active" id="gamesGrid"></div>
+        <div class="games-list" id="gamesList"></div>
+    </div>
+
+    <!-- Game Details Modal -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeGameDetails()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let allGames = [];
+        let filteredGames = [];
+        let currentView = 'grid';
+
+        // Load CSV data
+        async function loadGames() {
+            try {
+                const response = await fetch('brett_spiele_enhanced.csv');
+                const csvText = await response.text();
+                
+                // Parse CSV
+                const lines = csvText.split('\n');
+                const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+                
+                allGames = [];
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i].trim()) {
+                        const values = parseCSVLine(lines[i]);
+                        const game = {};
+                        headers.forEach((header, index) => {
+                            game[header] = values[index] || '';
+                        });
+                        allGames.push(game);
+                    }
+                }
+                
+                filteredGames = [...allGames];
+                filterAndSortGames(); // Apply initial sorting based on default selection
+                document.getElementById('loading').style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error loading games:', error);
+                document.getElementById('loading').innerHTML = 
+                    '<div class="error">Error loading board games data. Please make sure brett_spiele_enhanced.csv is in the same folder as this HTML file.</div>';
+            }
+        }
+
+        // Parse CSV line handling quoted values
+        function parseCSVLine(line) {
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            values.push(current.trim());
+            return values;
+        }
+
+        // Update statistics
+        // Create game card HTML
+        function createGameCard(game) {
+            const imageSrc = game.image_filename && 
+                !['NO_BGG_ID', 'INVALID_ID', 'DOWNLOAD_FAILED', 'NO_IMAGE'].includes(game.image_filename) 
+                ? `images/${game.image_filename}` : '';
+
+            const rank = game.rank && parseFloat(game.rank) > 0 ? `#${game.rank}` : 'Unranked';
+            const rating = game.bayesaverage && parseFloat(game.bayesaverage) > 0 ? parseFloat(game.bayesaverage).toFixed(1) : 'N/A';
+            const year = game.yearpublished || 'Unknown';
+            const gameType = game.is_expansion === '1' ? 'Expansion' : 'Base Game';
+            const gameTitle = game.name || game.game_name || 'Unknown Game';
+            
+            // Enhanced BGG data
+            const playerCount = game.min_players && game.max_players ? 
+                (game.min_players === game.max_players ? `${game.min_players}` : `${game.min_players}-${game.max_players}`) : 'N/A';
+            const bestPlayerCount = game.best_player_count || '';
+            const playingTime = game.playing_time || 'N/A';
+            const complexity = game.complexity_weight ? `${game.complexity_weight}/5` : 'N/A';
+            
+            // Check if cooperative game
+            const isCooperative = game.mechanics && game.mechanics.includes('Cooperative Game');
+            const isExpansion = game.is_expansion === '1';
+
+            return `
+                <div class="game-card" onclick="showGameDetails(${JSON.stringify(game).replace(/"/g, '&quot;')})">
+                    ${imageSrc ? 
+                        `<img src="${imageSrc}" alt="${gameTitle}" class="game-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                         <div class="game-image no-image" style="display:none;">No Image Available</div>` :
+                        `<div class="game-image no-image">No Image Available</div>`
+                    }
+                    <div class="game-title">${gameTitle}</div>
+                    <div class="game-details">
+                        <div class="detail-row">
+                            <span class="detail-label">👥 Players:</span>
+                            <span class="detail-value">${playerCount}${bestPlayerCount ? ` (Best: ${bestPlayerCount})` : ''}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">⏱️ Time:</span>
+                            <span class="detail-value">${playingTime}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">🧠 Weight:</span>
+                            <span class="detail-value">${complexity}</span>
+                        </div>
+                    </div>
+                    <div class="game-stats">
+                        <div class="stat">
+                            <div class="stat-value">${rank}</div>
+                            <div class="stat-label">BGG Rank</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${rating}</div>
+                            <div class="stat-label">Rating</div>
+                        </div>
+                    </div>
+                    ${isCooperative ? '<div class="cooperative-tag">Cooperative</div>' : ''}
+                    ${isExpansion ? `<div class="expansion-tag${isCooperative ? ' with-coop' : ''}">Expansion</div>` : ''}
+                </div>
+            `;
+        }
+
+        // Create list item HTML
+        function createListItem(game) {
+            const imageSrc = game.image_filename && 
+                !['NO_BGG_ID', 'INVALID_ID', 'DOWNLOAD_FAILED', 'NO_IMAGE'].includes(game.image_filename) 
+                ? `images/${game.image_filename}` : '';
+
+            const rank = game.rank && parseFloat(game.rank) > 0 ? `#${game.rank}` : 'Unranked';
+            const rating = game.bayesaverage && parseFloat(game.bayesaverage) > 0 ? parseFloat(game.bayesaverage).toFixed(1) : 'N/A';
+            const year = game.yearpublished || 'Unknown';
+            const gameType = game.is_expansion === '1' ? 'Expansion' : 'Base Game';
+            const gameTitle = game.name || game.game_name || 'Unknown Game';
+            
+            // Enhanced BGG data
+            const playerCount = game.min_players && game.max_players ? 
+                (game.min_players === game.max_players ? `${game.min_players}` : `${game.min_players}-${game.max_players}`) : 'N/A';
+            const bestPlayerCount = game.best_player_count || '';
+            const playingTime = game.playing_time || 'N/A';
+            const complexity = game.complexity_weight ? `${game.complexity_weight}/5` : 'N/A';
+
+            return `
+                <div class="list-item">
+                    ${imageSrc ? 
+                        `<img src="${imageSrc}" alt="${gameTitle}" class="list-image" onerror="this.className='list-image no-image'; this.alt='No Image';">` :
+                        `<div class="list-image no-image">No Image</div>`
+                    }
+                    <div class="list-content">
+                        <div class="list-title">${gameTitle}</div>
+                        <div class="list-details">
+                            <span>Rank: ${rank}</span>
+                            <span>Rating: ${rating}</span>
+                            <span>Year: ${year}</span>
+                            <span>Players: ${playerCount}${bestPlayerCount ? ` (Best: ${bestPlayerCount})` : ''}</span>
+                            <span>Time: ${playingTime}</span>
+                            <span>Weight: ${complexity}</span>
+                            <span>Type: ${gameType}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display games
+        function displayGames() {
+            const gridContainer = document.getElementById('gamesGrid');
+            const listContainer = document.getElementById('gamesList');
+            
+            if (currentView === 'grid') {
+                gridContainer.innerHTML = filteredGames.map(createGameCard).join('');
+                gridContainer.style.display = 'grid';
+                listContainer.style.display = 'none';
+            } else {
+                listContainer.innerHTML = filteredGames.map(createListItem).join('');
+                listContainer.style.display = 'block';
+                gridContainer.style.display = 'none';
+            }
+        }
+
+        // Filter and sort games
+        function filterAndSortGames() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const gameTypeFilter = document.getElementById('gameTypeFilter').value;
+            const playerCountFilter = document.getElementById('playerCountFilter').value;
+            const sortBy = document.getElementById('sortSelect').value;
+
+            // Filter games
+            filteredGames = allGames.filter(game => {
+                const matchesSearch = !searchTerm || 
+                    (game.name && game.name.toLowerCase().includes(searchTerm)) ||
+                    (game.game_name && game.game_name.toLowerCase().includes(searchTerm));
+                
+                // Game type filter
+                let matchesGameType = !gameTypeFilter;
+                
+                if (gameTypeFilter) {
+                    switch (gameTypeFilter) {
+                        case 'family':
+                            matchesGameType = game.familygames_rank && game.familygames_rank !== '0' && game.familygames_rank !== '';
+                            break;
+                        case 'strategy':
+                            matchesGameType = game.strategygames_rank && game.strategygames_rank !== '0' && game.strategygames_rank !== '';
+                            break;
+                        case 'children':
+                            matchesGameType = game.childrensgames_rank && game.childrensgames_rank !== '0' && game.childrensgames_rank !== '';
+                            break;
+                        case 'party':
+                            matchesGameType = game.partygames_rank && game.partygames_rank !== '0' && game.partygames_rank !== '';
+                            break;
+                        case 'thematic':
+                            matchesGameType = game.thematic_rank && game.thematic_rank !== '0' && game.thematic_rank !== '';
+                            break;
+                        case 'war':
+                            matchesGameType = game.wargames_rank && game.wargames_rank !== '0' && game.wargames_rank !== '';
+                            break;
+                        case 'abstract':
+                            matchesGameType = game.abstracts_rank && game.abstracts_rank !== '0' && game.abstracts_rank !== '';
+                            break;
+                        case 'cooperative':
+                            matchesGameType = game.mechanics && game.mechanics.includes('Cooperative Game');
+                            break;
+                    }
+                }
+                
+                // Player count filter - check if the selected count is in best or recommended
+                let matchesPlayerCount = !playerCountFilter;
+                
+                if (playerCountFilter) {
+                    const filterCount = playerCountFilter === '10+' ? 10 : parseInt(playerCountFilter);
+                    
+                    // Check best player count
+                    if (game.best_player_count) {
+                        const bestCounts = game.best_player_count.split(',').map(c => parseInt(c.trim()));
+                        if (bestCounts.includes(filterCount) || (playerCountFilter === '10+' && bestCounts.some(c => c >= 10))) {
+                            matchesPlayerCount = true;
+                        }
+                    }
+                    
+                    // Check recommended player count if not already matched
+                    if (!matchesPlayerCount && game.recommended_player_count) {
+                        const recCounts = game.recommended_player_count.split(',').map(c => parseInt(c.trim()));
+                        if (recCounts.includes(filterCount) || (playerCountFilter === '10+' && recCounts.some(c => c >= 10))) {
+                            matchesPlayerCount = true;
+                        }
+                    }
+                    
+                    // Fallback to min/max range if no best/recommended data
+                    if (!matchesPlayerCount && !game.best_player_count && !game.recommended_player_count) {
+                        const minPlayers = parseInt(game.min_players) || 0;
+                        const maxPlayers = parseInt(game.max_players) || 0;
+                        if (playerCountFilter === '10+') {
+                            matchesPlayerCount = maxPlayers >= 10;
+                        } else {
+                            matchesPlayerCount = minPlayers <= filterCount && maxPlayers >= filterCount;
+                        }
+                    }
+                }
+
+                return matchesSearch && matchesGameType && matchesPlayerCount;
+            });
+
+            // Sort games
+            filteredGames.sort((a, b) => {
+                switch (sortBy) {
+                    case 'rank':
+                        const rankA = parseFloat(a.rank) || 999999;
+                        const rankB = parseFloat(b.rank) || 999999;
+                        return rankA - rankB;
+                    case 'rating':
+                        const ratingA = parseFloat(a.bayesaverage) || 0;
+                        const ratingB = parseFloat(b.bayesaverage) || 0;
+                        return ratingB - ratingA;
+                    case 'rating-asc':
+                        const ratingA2 = parseFloat(a.bayesaverage) || 0;
+                        const ratingB2 = parseFloat(b.bayesaverage) || 0;
+                        return ratingA2 - ratingB2;
+                    case 'name':
+                        const nameA = (a.name || a.game_name || '').toLowerCase();
+                        const nameB = (b.name || b.game_name || '').toLowerCase();
+                        return nameA.localeCompare(nameB);
+                    case 'name-desc':
+                        const nameA2 = (a.name || a.game_name || '').toLowerCase();
+                        const nameB2 = (b.name || b.game_name || '').toLowerCase();
+                        return nameB2.localeCompare(nameA2);
+                    case 'year':
+                        const yearA = parseInt(a.yearpublished) || 0;
+                        const yearB = parseInt(b.yearpublished) || 0;
+                        return yearB - yearA;
+                    case 'year-asc':
+                        const yearA2 = parseInt(a.yearpublished) || 0;
+                        const yearB2 = parseInt(b.yearpublished) || 0;
+                        return yearA2 - yearB2;
+                    case 'complexity':
+                        const complexityA = parseFloat(a.complexity_weight) || 0;
+                        const complexityB = parseFloat(b.complexity_weight) || 0;
+                        return complexityA - complexityB;
+                    case 'complexity-desc':
+                        const complexityA2 = parseFloat(a.complexity_weight) || 0;
+                        const complexityB2 = parseFloat(b.complexity_weight) || 0;
+                        return complexityB2 - complexityA2;
+                    case 'players':
+                        const maxPlayersA = parseInt(a.max_players) || 0;
+                        const maxPlayersB = parseInt(b.max_players) || 0;
+                        return maxPlayersA - maxPlayersB;
+                    case 'players-desc':
+                        const maxPlayersA2 = parseInt(a.max_players) || 0;
+                        const maxPlayersB2 = parseInt(b.max_players) || 0;
+                        return maxPlayersB2 - maxPlayersA2;
+                    default:
+                        return 0;
+                }
+            });
+
+            displayGames();
+        }
+
+        // Event listeners
+        document.getElementById('searchBox').addEventListener('input', filterAndSortGames);
+        document.getElementById('gameTypeFilter').addEventListener('change', filterAndSortGames);
+        document.getElementById('playerCountFilter').addEventListener('change', filterAndSortGames);
+        document.getElementById('sortSelect').addEventListener('change', filterAndSortGames);
+
+        document.getElementById('gridView').addEventListener('click', () => {
+            currentView = 'grid';
+            document.getElementById('gridView').classList.add('active');
+            document.getElementById('listView').classList.remove('active');
+            displayGames();
+        });
+
+        document.getElementById('listView').addEventListener('click', () => {
+            currentView = 'list';
+            document.getElementById('listView').classList.add('active');
+            document.getElementById('gridView').classList.remove('active');
+            displayGames();
+        });
+
+        // Modal functions
+        function showGameDetails(game) {
+            const modal = document.getElementById('gameModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const imageSrc = game.image_filename && game.image_filename !== 'N/A' ? 
+                `images/${game.image_filename}` : null;
+            
+            const gameTitle = game.name || 'Unknown Game';
+            const year = game.yearpublished || 'Unknown';
+            const rank = game.rank && game.rank !== '0' ? `#${game.rank}` : 'Unranked';
+            const rating = game.bayesaverage && game.bayesaverage !== '0' ? 
+                parseFloat(game.bayesaverage).toFixed(2) : 'N/A';
+            const playerCount = game.min_players && game.max_players ? 
+                `${game.min_players}${game.min_players !== game.max_players ? `-${game.max_players}` : ''}` : 'N/A';
+            const bestPlayerCount = game.best_player_count || 'N/A';
+            const recommendedPlayerCount = game.recommended_player_count || 'N/A';
+            const playingTime = game.playing_time && game.playing_time !== '0' ? 
+                game.playing_time : 'N/A';
+            const complexity = game.complexity_weight && game.complexity_weight !== '0' ? 
+                `${parseFloat(game.complexity_weight).toFixed(2)}/5` : 'N/A';
+            const categories = game.categories ? game.categories.split(',').map(c => c.trim()) : [];
+            const mechanics = game.mechanics ? game.mechanics.split(',').map(m => m.trim()) : [];
+            
+            // Check if cooperative game
+            const isCooperative = game.mechanics && game.mechanics.includes('Cooperative Game');
+            
+            // Get special rankings
+            const specialRanks = [];
+            if (game.familygames_rank && game.familygames_rank !== '0' && game.familygames_rank !== '') {
+                specialRanks.push(`Family: #${game.familygames_rank}`);
+            }
+            if (game.strategygames_rank && game.strategygames_rank !== '0' && game.strategygames_rank !== '') {
+                specialRanks.push(`Strategy: #${game.strategygames_rank}`);
+            }
+            if (game.childrensgames_rank && game.childrensgames_rank !== '0' && game.childrensgames_rank !== '') {
+                specialRanks.push(`Children: #${game.childrensgames_rank}`);
+            }
+            if (game.thematic_rank && game.thematic_rank !== '0' && game.thematic_rank !== '') {
+                specialRanks.push(`Thematic: #${game.thematic_rank}`);
+            }
+            if (game.partygames_rank && game.partygames_rank !== '0' && game.partygames_rank !== '') {
+                specialRanks.push(`Party: #${game.partygames_rank}`);
+            }
+            if (game.wargames_rank && game.wargames_rank !== '0' && game.wargames_rank !== '') {
+                specialRanks.push(`War: #${game.wargames_rank}`);
+            }
+            if (game.abstracts_rank && game.abstracts_rank !== '0' && game.abstracts_rank !== '') {
+                specialRanks.push(`Abstract: #${game.abstracts_rank}`);
+            }
+            if (game.cgs_rank && game.cgs_rank !== '0' && game.cgs_rank !== '') {
+                specialRanks.push(`CGS: #${game.cgs_rank}`);
+            }
+            
+            modalContent.innerHTML = `
+                <div class="modal-header">
+                    ${imageSrc ? 
+                        `<img src="${imageSrc}" alt="${gameTitle}" class="modal-image-large" onerror="this.style.display='none';">` : 
+                        ''
+                    }
+                    <div class="modal-title-section">
+                        <div class="modal-title">${gameTitle}</div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            ${isCooperative ? '<div class="modal-tag">Cooperative</div>' : ''}
+                            ${game.is_expansion === '1' ? '<div class="modal-tag expansion">Expansion</div>' : ''}
+                        </div>
+                        ${specialRanks.length > 0 ? `<div class="special-ranks">${specialRanks.join(' • ')}</div>` : ''}
+                    </div>
+                </div>
+                
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <div class="modal-stat-value">${rank}</div>
+                        <div class="modal-stat-label">BGG Rank</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value">${rating}</div>
+                        <div class="modal-stat-label">Rating</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value">${playerCount}</div>
+                        <div class="modal-stat-label">Players</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value">${playingTime}</div>
+                        <div class="modal-stat-label">Playing Time</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value">${complexity}</div>
+                        <div class="modal-stat-label">Complexity</div>
+                    </div>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Best Player Count:</span>
+                        <span class="modal-detail-value">${bestPlayerCount}</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Recommended Player Count:</span>
+                        <span class="modal-detail-value">${recommendedPlayerCount}</span>
+                    </div>
+                    
+                    ${game.min_age && game.min_age !== '0' ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Minimum Age:</span>
+                        <span class="modal-detail-value">${game.min_age}+</span>
+                    </div>
+                    ` : ''}
+                    
+                    ${game.designer && game.designer !== 'N/A' ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Designer:</span>
+                        <span class="modal-detail-value">${game.designer}</span>
+                    </div>
+                    ` : ''}
+                    
+                    ${game.publisher && game.publisher !== 'N/A' ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Publisher:</span>
+                        <span class="modal-detail-value">${game.publisher}</span>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                ${categories.length > 0 || mechanics.length > 0 ? `
+                <div class="modal-tags">
+                    ${categories.map(cat => `<span class="modal-tag">${cat}</span>`).join('')}
+                    ${mechanics.map(mech => `<span class="modal-tag">${mech}</span>`).join('')}
+                </div>
+                ` : ''}
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeGameDetails() {
+            const modal = document.getElementById('gameModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore background scrolling
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('gameModal');
+            if (event.target === modal) {
+                closeGameDetails();
+            }
+        }
+
+        // Password Protection Functions
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMessage = document.getElementById('passwordError');
+            const password = passwordInput.value;
+
+            if (password === '1234') {
+                document.getElementById('passwordScreen').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                errorMessage.textContent = '';
+                loadGames(); // Load games after successful login
+            } else {
+                errorMessage.textContent = 'Incorrect password. Please try again.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        });
+    </script>
+    </div> <!-- Close mainContent -->
+</body>
+</html>
