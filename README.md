@@ -1,4 +1,4 @@
-# Board Game Collection Builder
+# Brett Innsbruck - Board Game Collection
 
 A streamlined two-step process to create a comprehensive board game collection from a simple text list.
 
