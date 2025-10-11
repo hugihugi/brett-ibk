@@ -10,12 +10,12 @@ https://boardgamegeek.com/boardgame/233247/civilization-a-new-dawn # Civilizatio
 https://boardgamegeek.com/boardgame/316858/cloudage # CloudAge
 Scythe
 https://boardgamegeek.com/boardgame/418059/seti-search-for-extraterrestrial-intelligence # SETI
-black forest
-istanbul big box
+https://boardgamegeek.com/boardgame/420805/black-forest # black forest
+https://boardgamegeek.com/boardgame/148949/istanbul # istanbul big box
 https://boardgamegeek.com/boardgame/367517/la-famiglia-the-great-mafia-war # la famiglia 
 dune imperium uprising
 schlafende götter
-dune imperium
+https://boardgamegeek.com/boardgame/316554/dune-imperium # dune imperium
 Revive
 https://boardgamegeek.com/boardgame/103343/a-game-of-thrones-the-board-game-second-edition # Der eiserne thron
 revive ruf der tiefe
@@ -24,37 +24,37 @@ https://boardgamegeek.com/boardgame/286751/zombicide-2nd-edition # Zombicide sec
 hai noon
 https://boardgamegeek.com/boardgame/40692/small-world # smallworld
 gaia project
-robinson crusoe deluxe
+https://boardgamegeek.com/boardgame/121921/robinson-crusoe-adventures-on-the-cursed-island # robinson crusoe deluxe
 catacombs # ???
 cavern of soloth
 bitoku
 https://boardgamegeek.com/boardgame/246900/eclipse-second-dawn-for-the-galaxy # eclipse
-die zwerge big box
+https://boardgamegeek.com/boardgame/124668/the-dwarves # die zwerge big box
 ???
 lost ruins of arnak
 terraforming mars
 flügelschlag
-Legendary # ???
+https://boardgamegeek.com/boardgame/129437/legendary-a-marvel-deck-building-game # Legendary # ???
 mlem die astrokatzen
 https://boardgamegeek.com/boardgameversion/677434/german-edition # eMission gibs et auf bgg
 Flamme rouge
 citadels
-221b baker street
+https://boardgamegeek.com/boardgame/1275/221b-baker-street-the-master-detective-game # 221b baker street
 magic maze
-bonsai
+https://boardgamegeek.com/boardgame/366994/bonsai # bonsai
 sky team
 the castles of burgundy
-terra mystica big box
+https://boardgamegeek.com/boardgame/120677/terra-mystica # terra mystica big box
 glow
 pandemic
-darwin # nicht gefunden
+https://boardgamegeek.com/boardgame/322289/darwins-journey # darwin # nicht gefunden
 ???
-dorfromantik das duell
+https://boardgamegeek.com/boardgame/395364/dorfromantik-the-duel # dorfromantik das duell
 https://boardgamegeek.com/boardgame/201808/clank-a-deck-building-adventure # Klong!
-Paleo
+https://boardgamegeek.com/boardgame/300531/paleo # Paleo
 living forest
 planet unknown
-isle of skye big box
+https://boardgamegeek.com/boardgame/176494/isle-of-skye-from-chieftain-to-king # isle of skye big box
 rival cities
 welcome to the moon
 nova luna
@@ -65,8 +65,8 @@ farshore
 havalandi
 everdell duo
 roll player
-sagrada
-run
+https://boardgamegeek.com/boardgame/199561/sagrada #sagrada
+https://boardgamegeek.com/boardgame/368028/run # run
 splendor
 waldgärtner
 aya
@@ -79,7 +79,7 @@ dungeon mayhem
 faraway
 the vale of eternity
 nimalia
-die crew
+https://boardgamegeek.com/boardgame/284083/the-crew-the-quest-for-planet-nine # die crew
 https://boardgamegeek.com/boardgame/429293/the-fellowship-of-the-ring-trick-taking-game # herr der ringe die gefährten
 https://boardgamegeek.com/boardgame/151/piratenbillard # piratenbilliard
 star wars the deckbuilding game
@@ -120,7 +120,7 @@ mysterium
 heat nasser asphalt
 catan sternenfahrer
 catan neue begenungen
-scout
+https://boardgamegeek.com/boardgame/291453/scout # scout
 schummel hummel
 king tokyo duel
 here to Slay
@@ -129,13 +129,13 @@ munchkin
 crime zoom
 linyo
 living forest duell
-mandala
+https://boardgamegeek.com/boardgame/264241/mandala # mandala
 draftosaurus
 triqueta
 power hungry pets
-set
+https://boardgamegeek.com/boardgame/1198/set # set
 cortex
-bang
+https://boardgamegeek.com/boardgame/3955/bang # bang
 werwölfe
 werwölfe morgengrauen
 nobody is perfect
@@ -144,7 +144,7 @@ mesos
 https://boardgamegeek.com/boardgame/119637/zug-um-zug-deutschland # zug um zug 
 keltis
 switch & signal
-ritual
+https://boardgamegeek.com/boardgame/373055/ritual # ritual
 quicksand
 https://boardgamegeek.com/boardgame/318977/micromacro-crime-city # micromacro
 azul
@@ -152,7 +152,7 @@ quacksalber
 kingdom builder
 bezzerwizzer
 scotland yard
-https://boardgamegeek.com/boardgame/364405/carcassonne-big-box-7 # carcassonne big box
+https://boardgamegeek.com/boardgame/822/carcassonne # carcassonne big box
 katamino
 first rat
 mein name ist

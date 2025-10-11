@@ -56,6 +56,14 @@ def merge_with_ranking_data(ids_df):
         merged_df['bayesaverage'] = merged_df['bayesaverage'].fillna(0)
         merged_df['name'] = merged_df['name'].fillna(merged_df['matched_name'])
         
+        # Fill missing category ranking values
+        category_ranks = ['abstracts_rank', 'cgs_rank', 'childrensgames_rank', 
+                         'familygames_rank', 'partygames_rank', 'strategygames_rank', 
+                         'thematic_rank', 'wargames_rank']
+        for rank_col in category_ranks:
+            if rank_col in merged_df.columns:
+                merged_df[rank_col] = merged_df[rank_col].fillna('')
+        
         print(f"✓ Merged data for {len(merged_df)} games")
         matched_with_ranks = len(merged_df[merged_df['rank'] != 999999])
         print(f"✓ Found ranking data for {matched_with_ranks} games")
@@ -71,6 +79,14 @@ def merge_with_ranking_data(ids_df):
         ids_df['usersrated'] = 0
         ids_df['is_expansion'] = 0
         ids_df['name'] = ids_df['matched_name']
+        
+        # Add empty category ranking columns
+        category_ranks = ['abstracts_rank', 'cgs_rank', 'childrensgames_rank', 
+                         'familygames_rank', 'partygames_rank', 'strategygames_rank', 
+                         'thematic_rank', 'wargames_rank']
+        for rank_col in category_ranks:
+            ids_df[rank_col] = ''
+        
         return ids_df
 
 def download_game_image(bgg_id, game_name):
@@ -141,7 +157,15 @@ def download_all_images(df):
         print(f"[{game_num}/{total_games}] 📸 {game_name}")
         
         # Check if image already exists
-        existing_images = [f for f in os.listdir('images') if f.startswith(f"{game_name}_{row.get('year', '')}")[:10]]
+        # Create safe filename prefix to check against
+        safe_name = "".join(c for c in game_name if c.isalnum() or c in (' ', '-', '_')).rstrip()
+        year = row.get('year', '') or row.get('yearpublished', '') or ''
+        
+        # Look for existing images with this BGG ID
+        existing_images = []
+        if os.path.exists('images'):
+            existing_images = [f for f in os.listdir('images') if f.endswith(f"_{bgg_id}.jpg") or f.endswith(f"_{bgg_id}.png")]
+        
         if existing_images:
             df.at[index, 'image_filename'] = existing_images[0]
             print(f"   ✓ Image already exists: {existing_images[0]}")
@@ -334,6 +358,8 @@ def create_final_csv(df):
     final_columns = [
         'original_line', 'game_name', 'bgg_id', 'name', 'year', 'yearpublished',
         'rank', 'bayesaverage', 'average', 'usersrated', 'is_expansion',
+        'abstracts_rank', 'cgs_rank', 'childrensgames_rank', 'familygames_rank', 
+        'partygames_rank', 'strategygames_rank', 'thematic_rank', 'wargames_rank',
         'status', 'confidence', 'image_filename',
         'min_players', 'max_players', 'best_player_count', 'recommended_player_count',
         'playing_time', 'complexity_weight', 'mechanics', 'categories'
