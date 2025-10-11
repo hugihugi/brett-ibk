@@ -1,0 +1,34 @@
+# Development Scripts - Keep locally, don't track on GitHub
+step1_extract_ids.py
+step2_build_collection.py
+start_server.py
+
+# Source Data Files - Keep locally, don't track on GitHub
+list.txt
+boardgame_ids.csv
+brett_spiele.csv
+boardgames_ranks.csv
+
+# Development folders
+archive_dev_scripts/
+
+# Excel files
+*.xlsx
+
+# Other photos/test files
+foto*.jpeg
+*.jpeg
+WhatsApp*.jpeg
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
