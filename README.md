@@ -13,7 +13,9 @@ Transform your board game list into a professional web-based collection with:
 ## 📋 Prerequisites
 
 1. **Python 3.7+** with packages: `pandas`, `requests`
-2. **list.txt** - Your game list (one game per line)
+2. **list2.txt** (or **list.txt**) - Your game list (one game per line)
+   - Format: `https://boardgamegeek.com/boardgame/ID/slug # Custom Name`
+   - The custom name after `#` will be displayed instead of the BGG name
 3. **boardgames_ranks.csv** (optional) - BGG ranking data for enhanced info
 
 ## 🚀 Quick Start
@@ -22,9 +24,10 @@ Transform your board game list into a professional web-based collection with:
 ```bash
 python step1_extract_ids.py
 ```
-- Reads `list.txt`
-- Extracts BGG IDs from URLs or searches BGG API
-- Creates `boardgame_ids.csv`
+- Reads `list2.txt` (or falls back to `list.txt`)
+- Extracts BGG IDs from URLs (preferred format)
+- Captures custom game names from comments (after `#`)
+- Creates `boardgame_ids.csv` with columns: `custom_name`, `bgg_link`, `bgg_id`
 - **Manual review recommended** for low-confidence matches
 
 ### Step 2: Build Collection
@@ -46,7 +49,8 @@ python start_server.py
 
 ```
 📂 Your Folder
-├── 📄 list.txt                      # Input: Your game list
+├── 📄 list2.txt                     # Input: Your game list (with BGG links & custom names)
+├── 📄 list.txt                      # Old format (fallback)
 ├── 📄 boardgames_ranks.csv         # Optional: BGG ranking data
 │
 ├── 🔧 step1_extract_ids.py         # Step 1: Extract BGG IDs
@@ -67,6 +71,8 @@ After step 1, review `boardgame_ids.csv`:
 - Fix incorrect matches
 
 **CSV Columns:**
+- `custom_name`: Your custom name for the game (from `#` comments)
+- `bgg_link`: Direct link to BGG page
 - `bgg_id`: Add or correct BGG IDs here
 - `confidence`: High/Medium/Low/None
 - `status`: Found/Not found/Manual review needed
@@ -88,6 +94,8 @@ Delete these files to regenerate:
 
 ### Collection Website
 - **Grid/List views** with game images
+- **Custom game names** - displays your names from list2.txt
+- **BGG links** - direct links to BoardGameGeek in game modals
 - **Search** by game name
 - **Filters**: Type, rating, player count, complexity
 - **Sort**: Rank, rating, name, year, complexity, players
@@ -106,13 +114,15 @@ Delete these files to regenerate:
 ### Common Issues
 
 **"list.txt not found"**
-- Create `list.txt` with one game per line
-- Games can be names or BGG URLs
+- Create `list2.txt` with one game per line
+- **Recommended format**: `https://boardgamegeek.com/boardgame/ID/slug # Custom Name`
+- Example: `https://boardgamegeek.com/boardgame/322708/descent-legends-of-the-dark # Descent`
+- The custom name after `#` will be displayed on your website
 
 **"Low success rate in Step 1"**
-- Use BGG URLs when possible: `https://boardgamegeek.com/boardgame/12345/game-name`
-- Clean up game names (remove expansions, versions)
-- Manually edit `boardgame_ids.csv`
+- **Always use direct BGG links** for 100% accuracy
+- Format: `https://boardgamegeek.com/boardgame/12345/game-name # Your Custom Name`
+- Manually edit `boardgame_ids.csv` if needed
 
 **"Images not downloading"**
 - Check internet connection
@@ -138,9 +148,12 @@ Delete these files to regenerate:
 ## 📈 Success Rates
 
 Typical success rates:
-- **With BGG URLs**: ~95-100%
+- **With direct BGG links (list2.txt format)**: 100% ✅
+- **With BGG URLs (old format)**: ~95-100%
 - **With clean game names**: ~80-90%
 - **With messy names**: ~60-70%
+
+**💡 Tip**: Always use the new `list2.txt` format with direct links and custom names!
 
 ## 🏆 Final Result
 
@@ -153,9 +166,22 @@ A professional board game collection website featuring:
 ## 🔄 Updates
 
 To update your collection:
-1. Add new games to `list.txt`
+1. Add new games to `list2.txt` (format: `BGG_LINK # Custom Name`)
 2. Re-run both steps
 3. Or manually add to `boardgame_ids.csv` and run step 2
+
+## 🆕 New Features (list2.txt)
+
+- **Custom game names**: Use your own names instead of BGG database names
+- **Direct BGG links**: Each game card has a button to view on BoardGameGeek
+- **100% accuracy**: Direct links eliminate search ambiguity
+- **Multilingual support**: Use names in your own language
+
+**Example list2.txt entry:**
+```
+https://boardgamegeek.com/boardgame/322708/descent-legends-of-the-dark # Descent
+https://boardgamegeek.com/boardgame/193037/dead-of-winter-the-long-night # Winter der Toten - Lange Nacht
+```
 
 ---
 

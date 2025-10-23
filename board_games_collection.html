@@ -564,6 +564,25 @@
             background: #e74c3c;
         }
 
+        .bgg-button {
+            display: inline-block;
+            background: #FF6600;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .bgg-button:hover {
+            background: #E55A00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
         @media (max-width: 768px) {
             .modal-content {
                 margin: 5% auto;
@@ -814,7 +833,8 @@
             const rating = game.bayesaverage && parseFloat(game.bayesaverage) > 0 ? parseFloat(game.bayesaverage).toFixed(1) : 'N/A';
             const year = game.yearpublished || 'Unknown';
             const gameType = game.is_expansion === '1' ? 'Expansion' : 'Base Game';
-            const gameTitle = game.name || game.game_name || 'Unknown Game';
+            // Prioritize custom_name from list2.txt, fallback to BGG name
+            const gameTitle = game.custom_name || game.name || game.game_name || 'Unknown Game';
             
             // Enhanced BGG data
             const playerCount = game.min_players && game.max_players ? 
@@ -875,7 +895,8 @@
             const rating = game.bayesaverage && parseFloat(game.bayesaverage) > 0 ? parseFloat(game.bayesaverage).toFixed(1) : 'N/A';
             const year = game.yearpublished || 'Unknown';
             const gameType = game.is_expansion === '1' ? 'Expansion' : 'Base Game';
-            const gameTitle = game.name || game.game_name || 'Unknown Game';
+            // Prioritize custom_name from list2.txt, fallback to BGG name
+            const gameTitle = game.custom_name || game.name || game.game_name || 'Unknown Game';
             
             // Enhanced BGG data
             const playerCount = game.min_players && game.max_players ? 
@@ -1087,11 +1108,15 @@
             const imageSrc = game.image_filename && game.image_filename !== 'N/A' ? 
                 `images/${game.image_filename}` : null;
             
-            const gameTitle = game.name || 'Unknown Game';
+            // Prioritize custom_name from list2.txt, fallback to BGG name
+            const gameTitle = game.custom_name || game.name || 'Unknown Game';
             const year = game.yearpublished || 'Unknown';
             const rank = game.rank && game.rank !== '0' ? `#${game.rank}` : 'Unranked';
             const rating = game.bayesaverage && game.bayesaverage !== '0' ? 
                 parseFloat(game.bayesaverage).toFixed(2) : 'N/A';
+            
+            // Create BGG link - prefer bgg_link from list2, fallback to constructing from ID
+            const bggLink = game.bgg_link || (game.bgg_id ? `https://boardgamegeek.com/boardgame/${game.bgg_id}` : null);
             const playerCount = game.min_players && game.max_players ? 
                 `${game.min_players}${game.min_players !== game.max_players ? `-${game.max_players}` : ''}` : 'N/A';
             const bestPlayerCount = game.best_player_count || 'N/A';
@@ -1146,6 +1171,7 @@
                             ${game.is_expansion === '1' ? '<div class="modal-tag expansion">Expansion</div>' : ''}
                         </div>
                         ${specialRanks.length > 0 ? `<div class="special-ranks">${specialRanks.join(' • ')}</div>` : ''}
+                        ${bggLink ? `<a href="${bggLink}" target="_blank" class="bgg-button">🎲 View on BoardGameGeek</a>` : ''}
                     </div>
                 </div>
                 
