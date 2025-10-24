@@ -734,8 +734,6 @@
                     <option value="rating-asc">Sort by Rating (Low to High)</option>
                     <option value="name">Sort by Name (A-Z)</option>
                     <option value="name-desc">Sort by Name (Z-A)</option>
-                    <option value="year">Sort by Year (New to Old)</option>
-                    <option value="year-asc">Sort by Year (Old to New)</option>
                     <option value="complexity">Sort by Complexity (Light to Heavy)</option>
                     <option value="complexity-desc">Sort by Complexity (Heavy to Light)</option>
                     <option value="players">Sort by Player Count (Low to High)</option>
@@ -830,7 +828,7 @@
                 ? `images/${game.image_filename}` : '';
 
             const rank = game.rank && parseFloat(game.rank) > 0 ? `#${game.rank}` : 'Unranked';
-            const rating = game.bayesaverage && parseFloat(game.bayesaverage) > 0 ? parseFloat(game.bayesaverage).toFixed(1) : 'N/A';
+            const rating = game.average && parseFloat(game.average) > 0 ? parseFloat(game.average).toFixed(1) : 'N/A';
             const year = game.yearpublished || 'Unknown';
             const gameType = game.is_expansion === '1' ? 'Expansion' : 'Base Game';
             // Prioritize custom_name from list2.txt, fallback to BGG name
@@ -892,7 +890,7 @@
                 ? `images/${game.image_filename}` : '';
 
             const rank = game.rank && parseFloat(game.rank) > 0 ? `#${game.rank}` : 'Unranked';
-            const rating = game.bayesaverage && parseFloat(game.bayesaverage) > 0 ? parseFloat(game.bayesaverage).toFixed(1) : 'N/A';
+            const rating = game.average && parseFloat(game.average) > 0 ? parseFloat(game.average).toFixed(1) : 'N/A';
             const year = game.yearpublished || 'Unknown';
             const gameType = game.is_expansion === '1' ? 'Expansion' : 'Base Game';
             // Prioritize custom_name from list2.txt, fallback to BGG name
@@ -1033,12 +1031,12 @@
                         const rankB = parseFloat(b.rank) || 999999;
                         return rankA - rankB;
                     case 'rating':
-                        const ratingA = parseFloat(a.bayesaverage) || 0;
-                        const ratingB = parseFloat(b.bayesaverage) || 0;
+                        const ratingA = parseFloat(a.average) || 0;
+                        const ratingB = parseFloat(b.average) || 0;
                         return ratingB - ratingA;
                     case 'rating-asc':
-                        const ratingA2 = parseFloat(a.bayesaverage) || 0;
-                        const ratingB2 = parseFloat(b.bayesaverage) || 0;
+                        const ratingA2 = parseFloat(a.average) || 0;
+                        const ratingB2 = parseFloat(b.average) || 0;
                         return ratingA2 - ratingB2;
                     case 'name':
                         const nameA = (a.name || a.game_name || '').toLowerCase();
@@ -1048,14 +1046,6 @@
                         const nameA2 = (a.name || a.game_name || '').toLowerCase();
                         const nameB2 = (b.name || b.game_name || '').toLowerCase();
                         return nameB2.localeCompare(nameA2);
-                    case 'year':
-                        const yearA = parseInt(a.yearpublished) || 0;
-                        const yearB = parseInt(b.yearpublished) || 0;
-                        return yearB - yearA;
-                    case 'year-asc':
-                        const yearA2 = parseInt(a.yearpublished) || 0;
-                        const yearB2 = parseInt(b.yearpublished) || 0;
-                        return yearA2 - yearB2;
                     case 'complexity':
                         const complexityA = parseFloat(a.complexity_weight) || 0;
                         const complexityB = parseFloat(b.complexity_weight) || 0;
@@ -1112,8 +1102,8 @@
             const gameTitle = game.custom_name || game.name || 'Unknown Game';
             const year = game.yearpublished || 'Unknown';
             const rank = game.rank && game.rank !== '0' ? `#${game.rank}` : 'Unranked';
-            const rating = game.bayesaverage && game.bayesaverage !== '0' ? 
-                parseFloat(game.bayesaverage).toFixed(2) : 'N/A';
+            const rating = game.average && game.average !== '0' ? 
+                parseFloat(game.average).toFixed(2) : 'N/A';
             
             // Create BGG link - prefer bgg_link from list2, fallback to constructing from ID
             const bggLink = game.bgg_link || (game.bgg_id ? `https://boardgamegeek.com/boardgame/${game.bgg_id}` : null);
