@@ -301,3 +301,6 @@ https://boardgamegeek.com/boardgame/68448/7-wonders # 7 Wonders
 https://boardgamegeek.com/boardgame/181304/mysterium # Mysterium
 https://boardgamegeek.com/boardgame/410291/heat-heavy-rain # HEAT: Nasser Asphalt
 https://boardgamegeek.com/boardgame/66/lowenherz # Löwenherz
+https://boardgamegeek.com/boardgame/291453/scout # Scout
+https://boardgamegeek.com/boardgame/9220/saboteur # Saboteur
+https://boardgamegeek.com/boardgame/151825/legends-of-andor-new-heroes # Legenden von Andor: Neue Helden
